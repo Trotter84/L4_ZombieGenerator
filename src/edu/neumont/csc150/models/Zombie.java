@@ -4,13 +4,11 @@ import java.util.Random;
 
 
 public abstract class Zombie {
-	private final Random random = new Random();
-	private final static int MIN_HP = 0;
-	private static final int MIN_SPEED = 0;
-	private int arms;
-	private int legs;
-	private int baseHP;
-	private int speed;
+	protected final Random random = new Random();
+	private int arms = random.nextInt(0, 3);
+	private int legs = random.nextInt(0, 3);
+	private int baseHP;  // max health
+	private int speed;   // How many feet-per-action a Zombie may move.
 
 //region ================= GETTERS//SETTERS =================
 
@@ -18,7 +16,7 @@ public abstract class Zombie {
 		return arms;
 	}
 
-	private void setArms(int arms) {
+	protected void setArms(int arms) {
 		if (arms < 1 || arms > 2) {
 			throw new IllegalArgumentException("Number of arms must be either 1 or 2.");
 		}
@@ -29,7 +27,7 @@ public abstract class Zombie {
 		return legs;
 	}
 
-	private void setLegs(int legs) {
+	protected void setLegs(int legs) {
 		if (legs < 1 || legs > 2) {
 			throw new IllegalArgumentException("Number of legs must be either 1 or 2.");
 		}
@@ -40,24 +38,16 @@ public abstract class Zombie {
 		return baseHP;
 	}
 
-	private void setBaseHP(int baseHP) {
-		if (baseHP < MIN_HP) {
-			this.baseHP = MIN_HP;
-		} else {
-			this.baseHP = baseHP;
-		}
+	protected void setBaseHP(int baseHP) {
+		this.baseHP = baseHP;
 	}
 
 	public int getSpeed() {
 		return speed;
 	}
 
-	private void setSpeed(int speed) {
-		if (speed < MIN_SPEED) {
-			this.speed = MIN_SPEED;
-		} else {
-			this.speed = speed;
-		}
+	protected void setSpeed(int speed) {
+		this.speed = speed;
 	}
 
 //endregion
@@ -71,11 +61,10 @@ public abstract class Zombie {
 		return sumOfDice;
 	}
 
-	protected abstract int attack(int attackRoll);
+	protected abstract Attack attack(int attackRoll);
 
 	@Override
 	public String toString() {
-//		TODO: write toString for Zombie
-		return null;
+		return "Arms \u2509 " + getArms() + " \u2502 " + "Legs \u2509 " + getLegs();
 	}
 }

@@ -1,21 +1,33 @@
 package edu.neumont.csc150.models;
 
 public class Walker extends Zombie {
-//	TODO: create variables
+	private int baseHP = random.nextInt(15, 31);
+	private int speed = random.nextInt(6, 11);
+	private Attack attack;
+
+	public Walker() {
+		setBaseHP(baseHP);
+		setSpeed(speed);
+	}
 
 //region ================= GETTERS//SETTERS =================
-//TODO: write getters and setters
+
 //endregion
 
 	@Override
-	protected int attack(int attackRoll) {
-//		TODO: finish method
-		return 0;
+	protected Attack attack(int attackRoll) {
+		if (attackRoll == 20) {
+			return attack = new Attack(roll(3, 6) * 2, AttackType.CRIT);
+		} else if (attackRoll >= 8 && attackRoll <= 19) {
+			return attack = new Attack(roll(3, 6), AttackType.NORMAL);
+		} else {
+			return attack = new Attack(0, AttackType.MISS);
+		}
 	}
 
 	@Override
 	public String toString() {
-//		TODO: write toString for Walker
-		return super.toString();
+		return getClass().getSimpleName() + "\t\u2524 " + super.toString() + " \u2502 " + "Base HP \u2509 " + getBaseHP() + " \u2502 " +
+				"Speed \u2509 " + getSpeed() + " \u251C";
 	}
 }
