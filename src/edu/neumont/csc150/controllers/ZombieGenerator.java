@@ -5,80 +5,76 @@ import edu.neumont.csc150.views.ZombieUI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class ZombieGenerator {
-	private List<Zombie> zombies = new ArrayList<>();
-	private ZombieUI zombieUI;
+    private Random random = new Random();
+    private List<Zombie> zombies;
+    private ZombieUI zombieUI;
 
-	public ZombieGenerator() {
-		zombieUI = new ZombieUI();
-	}
+    public ZombieGenerator() {
+        zombieUI = new ZombieUI();
+        zombies = new ArrayList<>();
+    }
 
-	public void run() {
-		mainMenuController();
+    public void run() {
+        mainMenuController();
+    }
 
-		Zombie walker1 = new Walker();
-		System.out.println(walker1);
-		Zombie runner1 = new Runner();
-		System.out.println(runner1);
-		Zombie tank1 = new Tank();
-		System.out.println(tank1);
+    public void mainMenuController() {
 
-		Zombie walker2 = new Walker();
-		System.out.println(walker2);
-		Zombie runner2 = new Runner();
-		System.out.println(runner2);
-		Zombie tank2 = new Tank();
-		System.out.println(tank2);
+        do {
+            int selection = zombieUI.mainMenu();
+            switch (selection) {
+                case 1 -> generateOneZombie();
+                case 2 -> generateSomeZombies();
+                case 3 -> generateNZombies(zombieUI.promptForQuantity());
+                case 4 -> {
+                    zombieUI.exitMessage();
+                    return;
+                }
+            }
+            printZombies();
+            clearZombies();
+        } while (true);
+    }
 
-	}
+    private void generateOneZombie() {
+        generateZombie();
+    }
 
-	public void mainMenuController() {
+    private void generateSomeZombies() {
+        for (int i = 0; i < random.nextInt(11); i++) {
+            generateZombie();
+        }
+    }
 
-		do {
-			int selection = zombieUI.mainMenu();
-			switch (selection) {
-				case 1 -> generateOneZombie();
-				case 2 -> generateSomeZombies(zombieUI.promptForQuantity());
-				case 3 -> generateNZombies(zombieUI.promptForQuantity());
-				case 4 -> {
-					return;
-				}
-			}
-		} while (true);
-	}
+    private void generateNZombies(int qty) throws IllegalArgumentException {
+        if (qty < 1) {
+            throw new IllegalArgumentException("Enter a number greater than 0");
+        }
+        for (int i = 0; i < qty; i++) {
+            generateZombie();
+        }
+    }
 
-	private void generateOneZombie() {
-		generateZombie();
-	}
+    private void generateZombie() {
+        switch (random.nextInt(3)) {
+            case 0 -> zombies.add(new Walker());
+            case 1 -> zombies.add(new Runner());
+            case 2 -> zombies.add(new Tank());
+        }
+    }
 
-	private void generateSomeZombies(int qty) {
-		if (qty < 1 || qty > 11) {
-			throw new IllegalArgumentException("Enter a number between 1-10");
-		}
-		for (int i = 0; i < qty; i++) {
-			generateZombie();
-		}
-	}
+    private void clearZombies() {
+        zombies.clear();
+    }
 
-	private void generateNZombies(int qty) {
-		for (int i = 0; i < qty; i++) {
-			generateZombie();
-		}
-	}
-
-	private void generateZombie() {
-//		TODO: Create new zombie instance.
-	}
-
-	private void zombieAttack() {
-//		TODO: zombie.attack(roll(1, 20));
-	}
-
-	private void printZombies() {
-//		TODO: loop over zombies List, for each Zombie;
-//		 call zombieRoll to generate and return attackAmount.
-//		 call zombieAttck(int attackAmount) tell UI to printZombie(Zombie z,AttackType attackType, int attackAmount)
-	}
+    private void printZombies() {
+        for (Zombie zombie : zombies) {
+            zombie.attack(zombie.roll(1, 20));
+            zombieUI.displayZombie(zombie, zombie.getAttack());
+        }
+    }
 }

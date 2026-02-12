@@ -32,4 +32,9 @@ public class Attack {
 	}
 
 //endregion
+
+	@Override
+	public String toString() {
+		return "Attack Type: " + getAttackType() + " \u2502 " + "Attack Amount: " + getDamage();
+	}
 }

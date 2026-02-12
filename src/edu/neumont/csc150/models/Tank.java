@@ -1,14 +1,11 @@
 package edu.neumont.csc150.models;
 
 public class Tank extends Zombie {
-	private int baseHP = random.nextInt(45, 71);
-	private int speed = random.nextInt(4, 9);
 	private int damageModifier = random.nextInt(10, 21);
-	private Attack attack;
 
 	public Tank() {
-		setBaseHP(baseHP);
-		setSpeed(speed);
+		setBaseHP(random.nextInt(10, 23));
+		setSpeed(random.nextInt(10, 23));
 		setDamageModifier(damageModifier);
 	}
 
@@ -28,7 +25,7 @@ public class Tank extends Zombie {
 //endregion
 
 	@Override
-	protected Attack attack(int attackRoll) {
+	public Attack attack(int attackRoll) {
 		if (attackRoll == 20) {
 			return attack = new Attack((roll(3, 6) + getDamageModifier()) * 3, AttackType.CRIT);
 		} else if (attackRoll >= 10 && attackRoll <= 19) {
@@ -40,7 +37,6 @@ public class Tank extends Zombie {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "\t\u2524 " + super.toString() + " \u2502 " + "Base HP \u2509 " + getBaseHP() + " \u2502 " +
-				"Speed \u2509 " + getSpeed() + " \u2502 " + "Damage Modifier \u2509 " + getDamageModifier() + " \u251C";
+		return getClass().getSimpleName() + "\t\u2524 " + super.toString() + " \u2502 " + "Damage Modifier \u2509 " + getDamageModifier() + " \u251C";
 	}
 }
